@@ -1,0 +1,200 @@
+public class CyptAbout
+{
+	// Init leger and Hex Map
+    private static Map<Integer, String> getBinaryToHexMap()
+    {
+        Map<Integer, String> result = new Map<Integer, String>();
+        result.put(10, 'A');
+        result.put(11, 'B');
+        result.put(12, 'C');
+        result.put(13, 'D');
+        result.put(14, 'E');
+        result.put(15, 'F');
+
+        return result;
+    }
+
+    // Get Hex String from Integer
+    public static String convertHexFromInt(Integer sourceNumber)
+    {   
+        Integer baseNumber = sourceNumber;
+        Integer leftNumber = 0;
+        String result = '';
+        Boolean flag = true;
+
+        While(flag)
+        {
+            leftNumber = Math.mod(baseNumber, 16);
+            baseNumber = baseNumber/16;
+            if(leftNumber > 9)
+            {
+                result = binaryToHexMap.get(leftNumber) + result;
+            }
+            else
+            {
+                result = leftNumber + result;
+            }
+
+            if(baseNumber == 0)
+            {
+                flag = false;
+            }
+        }
+
+        if(Math.mod(result.length(), 2) == 1)
+        {
+            result = '0' + result;
+        }
+
+        return result;
+    }
+
+    // Convert String to byte stream expressed by hex String
+    public static String convertStringToHexString(String sourceString)
+    {
+        String result = '';
+
+        if(!String.isBlank(sourceString))
+        {
+            for(Integer i = 0; i < sourceString.length(); i++)
+            {
+                result += convertHexFromInt(sourceString.charAt(i));
+            }
+        }
+
+        return result;
+    }
+
+    public static Blob base64Decode(String sourceString)
+    {
+        // Remove '=' the end of string
+        String source = '';
+        if(!String.isBlank(sourceString) && sourceString.endsWith('='))
+        {
+            Integer offset = sourceString.countMatches('=');
+            source = sourceString.substring(0, sourceString.length() - offset);
+        }
+
+        System.debug(source);
+
+        // Covert string to binary string by base64 table
+        Map<String, Integer> base64EncodeMap = getBase64EncodeMap();
+        List<String> convertResult = new List<String>();
+        Integer temp;
+        for(Integer i = 0; i < source.length(); i++)
+        {
+            temp = base64EncodeMap.get(convertIntToASCIIChar(source.charAt(i)));
+            convertResult.add(convertIntToBinaryString(temp));
+        }
+
+        // Remove the 00 at the start of every bytes
+        List<String> removedResult = new List<String>();
+        Integer resultSize = convertResult.size();
+        for(Integer i = 0; i < resultSize; i++)
+        {
+            removedResult.add(convertResult[i].substring(2));
+        }
+
+        // Get final binary string
+        String removeResultString = '';
+        for(String str : removedResult)
+        {
+            removeResultString += str;
+        } 
+
+        // Remove the pad 0 at the end of the byte stream
+        Integer padCount = Math.mod(removeResultString.length(), 8);
+        if(padCount > 0)
+        {
+            removeResultString = removeResultString.substring(0, removeResultString.length() - padCount);
+        }
+
+        String finalHexString = '';
+        for(Integer i = 0; i < removeResultString.length(); i = i + 8)
+        {
+            Integer tempInt = convertBinaryStringToInt(removeResultString.substring(i, i + 8));
+            finalHexString += convertHexFromInt(tempInt);
+        }
+
+        return EncodingUtil.convertFromHex(finalHexString);
+    }
+
+    private static Map<String, Integer> getBase64EncodeMap()
+    {
+        Map<String, Integer> result = new Map<String, Integer>();
+
+        String base64String = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+
+        for(Integer i = 0; i < base64String.length(); i++)
+        {
+            result.put(convertIntToASCIIChar(base64String.charAt(i)), i);
+        }
+
+        return result;
+    }
+
+    public static String convertIntToBinaryString(Integer sourceNumber)
+    {
+        Integer baseNumber = sourceNumber;
+        Integer leftNumber = 0;
+        String result = '';
+        Boolean flag = true;
+
+        While(flag)
+        {
+            leftNumber = Math.mod(baseNumber, 2);
+            baseNumber = baseNumber/2;
+            result = leftNumber + result;
+
+            if(baseNumber == 0 && leftNumber == 1)
+            {
+                flag = false;
+            }
+        }
+
+        Integer resultLength = result.length();
+        Integer leftCount = Math.mod(resultLength, 8);
+        if(leftCount != 0)
+        {
+            String paddingString = '';
+            for(Integer i = 0; i < 8 - leftCount; i++)
+            {
+                paddingString += '0';
+            }
+
+            result = paddingString + result;
+        }
+
+        return result;
+    }
+
+    public static Integer convertBinaryStringToInt(String sourceString)
+    {
+        Integer result = 0;
+        Integer count = 0;
+
+        for(Integer i = sourceString.length() - 1; i >= 0; i--)
+        {
+            if(getCharFromStringByIndex(sourceString, i) == '1')
+            {
+                result += (Integer) Math.pow(2, count);
+            }
+            else if(getCharFromStringByIndex(sourceString, i) == '0') {}
+
+            count = count + 1;
+        }
+
+        return result;
+    }
+
+    public static String getCharFromStringByIndex(String sourceString, Integer index)
+    {
+        return convertIntToASCIIChar(sourceString.charAt(index));
+    }
+
+    // Get ASCII Char through sourNumber
+    public static String convertIntToASCIIChar(Integer sourceNumber)
+    {
+        return String.fromCharArray(new List<integer> { sourceNumber });
+    }
+}
