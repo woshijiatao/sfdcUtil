@@ -1,0 +1,92 @@
+public class PaginationAbout
+{
+    @TestVisible private void initPaginationBar()
+    {
+        PaginationBarList = new List<PaginationBar>();
+
+        if(Math.mod(setCon.getResultSize(), OPPORTUNITY_SIZE) == 0)
+        {
+            PageCount = setCon.getResultSize()/OPPORTUNITY_SIZE;
+        }
+        else
+        {
+            PageCount = setCon.getResultSize()/OPPORTUNITY_SIZE + 1;
+        }
+        CurrentPage = setCon.getPageNumber();
+
+        if(PageCount <= 8)
+        {
+            for(Integer i = 1; i <= PageCount; i++)
+            {
+                addPaginationBar(i);
+            }
+        }
+        else
+        {
+            if(PageCount > MAX_PAGE_COUNT)
+            {
+                PageCount = MAX_PAGE_COUNT;
+            }
+
+            for(Integer i = 1; i <= 2; i++)
+            {
+                addPaginationBar(i);
+            }
+
+            if(CurrentPage <= 3)
+            {
+                for(Integer i = 3; i <= 5; i++)
+                {
+                    addPaginationBar(i);
+                }
+                PaginationBarList.add(new PaginationBar(0, 'gap'));
+            }
+            else if(CurrentPage >= PageCount - 2)
+            {
+                PaginationBarList.add(new PaginationBar(0, 'gap'));
+
+                for(Integer i = PageCount - 4; i <= PageCount - 2; i++)
+                {
+                    addPaginationBar(i);
+                }
+            }
+            else if(CurrentPage <= 6 && CurrentPage < PageCount - 5)
+            {
+                for(Integer i = 3; i <= CurrentPage + 2; i++)
+                {
+                    addPaginationBar(i);
+                }
+                PaginationBarList.add(new PaginationBar(0, 'gap'));
+            }
+            else if(CurrentPage > 6 && CurrentPage >= PageCount - 5)
+            {
+                PaginationBarList.add(new PaginationBar(0, 'gap'));
+                for(Integer i = CurrentPage - 2; i <= PageCount - 2; i++)
+                {
+                    addPaginationBar(i);
+                }
+            }
+            else if(CurrentPage <= 6 && CurrentPage >= PageCount - 5)
+            {
+                for(Integer i = 3; i <= PageCount - 2; i++)
+                {
+                    addPaginationBar(i);
+                }
+            }
+            else
+            {
+                PaginationBarList.add(new PaginationBar(0, 'gap'));
+                for(Integer i = CurrentPage - 2; i < = CurrentPage + 2; i++)
+                {
+                    addPaginationBar(i);
+                }
+                PaginationBarList.add(new PaginationBar(0, 'gap'));
+            }
+
+            for(Integer i = PageCount - 1; i <= PageCount; i++)
+            {
+                addPaginationBar(i);
+            }
+        }
+    }
+}
