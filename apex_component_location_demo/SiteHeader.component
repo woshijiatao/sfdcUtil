@@ -1,0 +1,29 @@
+<apex:component layout="none">
+    <head>
+      	<apex:attribute name="pageTitle" description="Title of this visualforce page." type="String" required="true" />
+        <apex:attribute name="staticPath" description="Static resource css file path." type="String" required="true" />
+        <title>{!pageTitle}</title>
+        <link href="{!URLFOR($Resource.CharketWeb, staticPath)}" rel="stylesheet" type="text/css" />
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="keywords" content="Social,CRM,WeChat,Marketing,微信和Salesforce集成" />
+        <meta name="description" content="Charket connects your Salesforce with WeChat and its 1 billion users. With Charket, you can market and sell your products to WeChat users and provide them the best customer service right from within Salesforce." />
+        <meta property="og:title" content="Charket: Connects Your Business with WeChat/微信" />
+        <meta property="og:description" content="Charket connects your Salesforce with WeChat and its 1 billion users. With Charket, you can market and sell your products to WeChat users and provide them the best customer service right from within Salesforce." />
+        <meta property="og:image" />
+        <meta property="og:site_name" content="Charket.com" />
+        <meta property="og:url" content="http://www.charket.com" />
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content="en" />
+    </head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async="true" src="https://www.googletagmanager.com/gtag/js?id=UA-113783385-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-113783385-1');
+    </script>
+</apex:component>

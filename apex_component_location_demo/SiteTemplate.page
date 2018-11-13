@@ -1,0 +1,10 @@
+<apex:page showHeader="false" sidebar="false" docType="html-5.0" standardStylesheets="false"
+ applyBodyTag="false" applyHtmlTag="false">
+    <html lang="en">
+        <apex:insert name="header"/>
+        <body>
+            <apex:insert name="body"/>
+            <c:sitefooter></c:sitefooter>
+        </body>
+    </html>
+</apex:page>
