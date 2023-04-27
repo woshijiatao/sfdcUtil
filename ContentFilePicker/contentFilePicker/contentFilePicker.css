@@ -1,0 +1,29 @@
+.left-panel {
+    width: 40%;
+    flex-shrink: 0;
+}
+
+.right-panel {
+    width: 60%;
+}
+
+.file-list {
+    height: 450px;
+}
+
+.checkbox-container {
+    width: 40px;
+    line-height: 40px;
+    padding-left: 12px;
+    flex-shrink: 0;
+}
+
+.secondary-fields span:after {
+    content: "\2022";
+    margin: 0 5px;
+}
+
+.secondary-fields span:last-child:after {
+    content: '';
+    margin: 0;
+}
