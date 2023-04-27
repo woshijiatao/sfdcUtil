@@ -1,0 +1,90 @@
+<template>
+    <button
+        class="slds-button slds-button_neutral"
+        onclick={onClickAddFiles}
+    >
+        Add Files
+    </button>
+    <c-modal
+        class="picker-modal"
+        header-label="Select Files"
+        width="50%"
+        min-width="40rem"
+    >
+        <div class="slds-grid" slot="content">
+            <div class="left-panel">
+                <div class="slds-m-horizontal_medium slds-m-bottom_medium">
+                    <lightning-file-upload
+                        name="fileUploader"
+                        record-id={recordId}
+                        onuploadfinished={handleUploadFinished}
+                        multiple
+                    >
+                    </lightning-file-upload>
+                </div>
+
+                <ul role="tree" class="slds-tree">
+                    <template for:each={navTreeItems} for:item="item">
+                        <li
+                            role="treeitem"
+                            aria-level="1"
+                            aria-selected={item.selected}
+                            key={item.label}
+                            data-name={item.label}
+                            data-action={item.action}
+                            onclick={handleNavItemClick}
+                        >
+                            <div class="slds-tree__item">
+                                <a class="slds-tree__item-label">
+                                    {item.label}
+                                </a>
+                            </div>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+            <div class="slds-border_left"></div>
+            <div class="right-panel">
+                <div class="file-list slds-scrollable">
+                    <ul>
+                        <li class="slds-grid" for:each={fileList} for:item="file" key={file.Id}>
+                            <div class="slds-truncate checkbox-container">
+                                <lightning-input
+                                    type="checkbox"
+                                    data-id={file.Id}
+                                    onchange={handleCheckbox}
+                                    variant="label-hidden"
+                                    style="min-width: 24px;"
+                                ></lightning-input>
+                            </div>
+                            <div class="slds-grid slds-grid_vertical slds-grid_align-center slds-col">
+                                <a target="_blank" class="slds-truncate">{file.Name}</a>
+                                <div class="secondary-fields">
+                                    <span>{file.LastModifiedDate}</span>
+                                    <span>{file.Size}</span>
+                                    <span>{file.Format}</span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div slot="footer">
+            <button
+                class="slds-button slds-button_neutral"
+                disabled={isSaving}
+                onclick={onClickCancel}
+            >
+                Cancel
+            </button>
+            <button
+                class="slds-button slds-button_brand"
+                disabled={isSaving}
+                onclick={onClickAdd}
+            >
+                Add
+            </button>
+        </div>
+    </c-modal>    
+</template>
